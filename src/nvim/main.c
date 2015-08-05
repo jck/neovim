@@ -1836,16 +1836,9 @@ static void source_startup_scripts(mparm_T *parmp)
      * - second user exrc file ($VIM/.exrc for Dos)
      * The first that exists is used, the rest is ignored.
      */
+    char_u *usr_vimrc = concat_fnames(std_paths.config_home, "init.vim", true);
     if (process_env("VIMINIT", true) != OK) {
-      if (do_source((char_u *)USR_VIMRC_FILE, TRUE, DOSO_VIMRC) == FAIL
-#ifdef USR_VIMRC_FILE2
-          && do_source((char_u *)USR_VIMRC_FILE2, TRUE,
-            DOSO_VIMRC) == FAIL
-#endif
-#ifdef USR_VIMRC_FILE3
-          && do_source((char_u *)USR_VIMRC_FILE3, TRUE,
-            DOSO_VIMRC) == FAIL
-#endif
+      if (do_source(usr_vimrc, TRUE, DOSO_VIMRC) == FAIL
           && process_env("EXINIT", FALSE) == FAIL
           && do_source((char_u *)USR_EXRC_FILE, FALSE, DOSO_NONE) == FAIL) {
 #ifdef USR_EXRC_FILE2
@@ -1871,16 +1864,8 @@ static void source_startup_scripts(mparm_T *parmp)
         secure = p_secure;
 
       i = FAIL;
-      if (path_full_compare((char_u *)USR_VIMRC_FILE,
+      if (path_full_compare(usr_vimrc,
             (char_u *)VIMRC_FILE, FALSE) != kEqualFiles
-#ifdef USR_VIMRC_FILE2
-          && path_full_compare((char_u *)USR_VIMRC_FILE2,
-            (char_u *)VIMRC_FILE, FALSE) != kEqualFiles
-#endif
-#ifdef USR_VIMRC_FILE3
-          && path_full_compare((char_u *)USR_VIMRC_FILE3,
-            (char_u *)VIMRC_FILE, FALSE) != kEqualFiles
-#endif
 #ifdef SYS_VIMRC_FILE
           && path_full_compare((char_u *)SYS_VIMRC_FILE,
             (char_u *)VIMRC_FILE, FALSE) != kEqualFiles
