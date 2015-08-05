@@ -210,6 +210,7 @@ void early_init(void)
   // msg_outtrans_len_attr().
   // First find out the home directory, needed to expand "~" in options.
   init_homedir();               // find real value of $HOME
+  init_std_paths();
   set_init_1();
   TIME_MSG("inits 1");
 

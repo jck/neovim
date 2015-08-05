@@ -29,6 +29,7 @@
 #include "nvim/syntax_defs.h"
 #include "nvim/types.h"
 #include "nvim/event/loop.h"
+#include "nvim/os/stdpaths_defs.h"
 
 /*
  * definition of global variables
@@ -1231,5 +1232,7 @@ typedef enum {
   kWorking,
   kBroken
 } WorkingStatus;
+
+EXTERN StdPaths std_paths;
 
 #endif /* NVIM_GLOBALS_H */
