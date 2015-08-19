@@ -54,12 +54,12 @@ static const char *get_xdg_home(XDGDirType idx)
   return dir;
 }
 
-const char *get_user_confdir(void)
+const char *get_user_conf_dir(void)
 {
   return get_xdg_home(config_home);
 }
 
-const char *get_user_rc(void)
+const char *get_from_user_conf(const char * fname)
 {
-  return (const char *)concat_fnames(get_user_confdir(), "init.vim", true);
+  return (const char *)concat_fnames(get_user_conf_dir(), fname, true);
 }
