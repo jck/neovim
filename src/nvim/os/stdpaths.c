@@ -54,6 +54,15 @@ static const char *get_xdg_home(XDGDirType idx)
   return dir;
 }
 
+static void create_dir(const char *dir, int mode, const char *suffix)
+{
+  char *failed;
+  if (!os_mkdir_recurse(dir, mode, &failed)) {
+    // TODO: Create a folder in $TMPDIR instead
+    DLOG("Create dir failed");
+  }
+}
+
 const char *get_user_conf_dir(void)
 {
   return get_xdg_home(config_home);
@@ -62,4 +71,18 @@ const char *get_user_conf_dir(void)
 const char *get_from_user_conf(const char * fname)
 {
   return (const char *)concat_fnames(get_user_conf_dir(), fname, true);
+}
+
+const char *get_user_data_dir(void)
+{
+  return get_xdg_home(data_home);
+}
+
+const char *get_from_user_data(const char * fname)
+{
+  const char *dir = (const char *)concat_fnames(get_user_data_dir(), fname, true);
+  if (!os_isdir((char_u *)dir)) {
+    create_dir(dir, 0755, fname);
+  }
+  return dir;
 }
