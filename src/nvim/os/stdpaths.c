@@ -4,31 +4,43 @@
 #include "nvim/garray.h"
 
 typedef enum {
-  config_home,
-  data_home,
-  cache_home,
-  runtime_dir,
-  config_dirs,
-  data_dirs,
+  kConfigHome,
+  kDataHome,
+  kCacheHome,
+  kRuntimeDir,
+  kConfigDirs,
+  kDataDirs,
 } XDGDirType;
 
 static const char *xdg_env_vars[] = {
-  [config_home] = "XDG_CONFIG_HOME",
-  [data_home] = "XDG_DATA_HOME",
-  [cache_home] = "XDG_CACHE_HOME",
-  [runtime_dir] = "XDG_RUNTIME_DIR",
-  [config_dirs] = "XDG_CONFIG_DIRS",
-  [data_dirs] = "XDG_DATA_DIRS",
+  [kConfigHome] = "XDG_CONFIG_HOME",
+  [kDataHome] = "XDG_DATA_HOME",
+  [kCacheHome] = "XDG_CACHE_HOME",
+  [kRuntimeDir] = "XDG_RUNTIME_DIR",
+  [kConfigDirs] = "XDG_CONFIG_DIRS",
+  [kDataDirs] = "XDG_DATA_DIRS",
 };
 
-#ifdef __linux__
 static const char *const xdg_defaults[] = {
-  [config_home] = "~/.config",
-  [data_home] = "~/.local/share",
-  [cache_home] = "~/.cache",
-  [runtime_dir] = "",
-  [config_dirs] = "/etc/xdg/",
-  [data_dirs] = "/usr/local/share/:/usr/share/",
+  // Windows, Apple stuff are just shims right now
+#ifdef WIN32
+  // Windows
+#elif APPLE
+  // Apple (this includes iOS, which we might need to handle differently)
+  [kConfigHome] = "~/Library/Preferences",
+  [kDataHome] = "~/Library/Application Support",
+  [kCacheHome] = "~/Library/Caches",
+  [kRuntimeDir] = "~/Library/Application Support",
+  [kConfigDirs] = "/Library/Application Support",
+  [kDataDirs] = "/Library/Application Support",
+#else
+  // Linux, BSD, CYGWIN
+  [kConfigHome] = "~/.config",
+  [kDataHome] = "~/.local/share",
+  [kCacheHome] = "~/.cache",
+  [kRuntimeDir] = "",
+  [kConfigDirs] = "/etc/xdg/",
+  [kDataDirs] = "/usr/local/share/:/usr/share/",
 };
 #endif
 
@@ -65,7 +77,7 @@ static void create_dir(const char *dir, int mode, const char *suffix)
 
 const char *get_user_conf_dir(void)
 {
-  return get_xdg_home(config_home);
+  return get_xdg_home(kConfigHome);
 }
 
 const char *get_from_user_conf(const char * fname)
@@ -75,7 +87,7 @@ const char *get_from_user_conf(const char * fname)
 
 const char *get_user_data_dir(void)
 {
-  return get_xdg_home(data_home);
+  return get_xdg_home(kDataHome);
 }
 
 const char *get_from_user_data(const char * fname)
