@@ -4,21 +4,21 @@
 #include "nvim/garray.h"
 
 typedef enum {
-  kConfigHome,
-  kDataHome,
-  kCacheHome,
-  kRuntimeDir,
-  kConfigDirs,
-  kDataDirs,
+  kXDGConfigHome,
+  kXDGDataHome,
+  kXDGCacheHome,
+  kXDGRuntimeDir,
+  kXDGConfigDirs,
+  kXDGDataDirs,
 } XDGDirType;
 
 static const char *xdg_env_vars[] = {
-  [kConfigHome] = "XDG_CONFIG_HOME",
-  [kDataHome] = "XDG_DATA_HOME",
-  [kCacheHome] = "XDG_CACHE_HOME",
-  [kRuntimeDir] = "XDG_RUNTIME_DIR",
-  [kConfigDirs] = "XDG_CONFIG_DIRS",
-  [kDataDirs] = "XDG_DATA_DIRS",
+  [kXDGConfigHome] = "XDG_CONFIG_HOME",
+  [kXDGDataHome] = "XDG_DATA_HOME",
+  [kXDGCacheHome] = "XDG_CACHE_HOME",
+  [kXDGRuntimeDir] = "XDG_RUNTIME_DIR",
+  [kXDGConfigDirs] = "XDG_CONFIG_DIRS",
+  [kXDGDataDirs] = "XDG_DATA_DIRS",
 };
 
 static const char *const xdg_defaults[] = {
@@ -27,20 +27,20 @@ static const char *const xdg_defaults[] = {
   // Windows
 #elif APPLE
   // Apple (this includes iOS, which we might need to handle differently)
-  [kConfigHome] = "~/Library/Preferences",
-  [kDataHome] = "~/Library/Application Support",
-  [kCacheHome] = "~/Library/Caches",
-  [kRuntimeDir] = "~/Library/Application Support",
-  [kConfigDirs] = "/Library/Application Support",
-  [kDataDirs] = "/Library/Application Support",
+  [kXDGConfigHome] = "~/Library/Preferences",
+  [kXDGDataHome] = "~/Library/Application Support",
+  [kXDGCacheHome] = "~/Library/Caches",
+  [kXDGRuntimeDir] = "~/Library/Application Support",
+  [kXDGConfigDirs] = "/Library/Application Support",
+  [kXDGDataDirs] = "/Library/Application Support",
 #else
   // Linux, BSD, CYGWIN
-  [kConfigHome] = "~/.config",
-  [kDataHome] = "~/.local/share",
-  [kCacheHome] = "~/.cache",
-  [kRuntimeDir] = "",
-  [kConfigDirs] = "/etc/xdg/",
-  [kDataDirs] = "/usr/local/share/:/usr/share/",
+  [kXDGConfigHome] = "~/.config",
+  [kXDGDataHome] = "~/.local/share",
+  [kXDGCacheHome] = "~/.cache",
+  [kXDGRuntimeDir] = "",
+  [kXDGConfigDirs] = "/etc/xdg/",
+  [kXDGDataDirs] = "/usr/local/share/:/usr/share/",
 };
 #endif
 
@@ -77,7 +77,7 @@ static void create_dir(const char *dir, int mode, const char *suffix)
 
 const char *get_user_conf_dir(void)
 {
-  return get_xdg_home(kConfigHome);
+  return get_xdg_home(kXDGConfigHome);
 }
 
 const char *get_from_user_conf(const char * fname)
@@ -87,7 +87,7 @@ const char *get_from_user_conf(const char * fname)
 
 const char *get_user_data_dir(void)
 {
-  return get_xdg_home(kDataHome);
+  return get_xdg_home(kXDGDataHome);
 }
 
 const char *get_from_user_data(const char * fname)
