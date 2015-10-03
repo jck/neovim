@@ -70,7 +70,7 @@ static void create_dir(const char *dir, int mode, const char *suffix)
 {
   char *failed;
   if (!os_mkdir_recurse(dir, mode, &failed)) {
-    // TODO: Create a folder in $TMPDIR instead
+    // TODO(jck): Create a folder in $TMPDIR instead
     DLOG("Create dir failed");
   }
 }
@@ -92,7 +92,8 @@ const char *get_user_data_dir(void)
 
 const char *get_from_user_data(const char * fname)
 {
-  const char *dir = (const char *)concat_fnames(get_user_data_dir(), fname, true);
+  const char *dir = (const char *)concat_fnames(get_user_data_dir(),
+                                                fname, true);
   if (!os_isdir((char_u *)dir)) {
     create_dir(dir, 0755, fname);
   }
